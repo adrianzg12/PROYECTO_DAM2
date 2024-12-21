@@ -5,17 +5,14 @@ class ApiManager {
     
     static let shared = ApiManager()
     
-    // Fetch categorías
     func fetchCategorias(completion: @escaping ([String]?, Error?) -> Void) {
         let url = "http://localhost:9090/api/categories"
         AF.request(url).responseJSON { response in
             switch response.result {
             case .success(let json):
-                print("Categorias response: \(json)")  // Para ver cómo es la respuesta de la API
+                print("Categorias response: \(json)")
                 
-                // Intenta convertir la respuesta en un array de diccionarios
                 if let jsonArray = json as? [[String: Any]] {
-                    // Extrae los nombres de las categorías
                     let nombresCategorias = jsonArray.compactMap { categoria -> String? in
                         return categoria["nombre"] as? String
                     }
@@ -38,11 +35,9 @@ class ApiManager {
         AF.request(url).responseJSON { response in
             switch response.result {
             case .success(let json):
-                print("Tiendas response: \(json)")  // Imprime la respuesta para ver cómo es el formato
+                print("Tiendas response: \(json)")
                 
-                // Intenta convertir la respuesta en un array de diccionarios
                 if let jsonArray = json as? [[String: Any]] {
-                    // Extrae los nombres de las tiendas
                     let nombresTiendas = jsonArray.compactMap { tienda -> String? in
                         return tienda["nombre"] as? String
                     }

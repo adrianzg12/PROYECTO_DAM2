@@ -1,66 +1,59 @@
 import Foundation
 import CoreData
 
-// Asegúrate de que este código esté dentro de Persistence.swift o en un archivo separado según tu estructura de proyecto.
-
 struct CoreDataManagerCompras {
     
     static let shared = CoreDataManagerCompras()
     
-    // Usamos el contexto compartido del PersistenceController
     private let context = PersistenceController.shared.viewContext
     
-    // Función para guardar un artículo
-    func guardarArticulo(nombre: String, cantidad: Int32, prioridad: String, notas: String?, categoria: String, tienda: String) throws {
+    func guardarArticulo(nombre: String, cantidad: Int32, prioridad: String, notas: String?, categoria: String, tiendas: [Tienda]) throws {
         let nuevoArticulo = Articulo(context: context)
-        nuevoArticulo.id = UUID()  // Asignamos un ID único
+        nuevoArticulo.id = UUID()
         nuevoArticulo.nombre = nombre
         nuevoArticulo.cantidad = cantidad
         nuevoArticulo.prioridad = prioridad
         nuevoArticulo.notas = notas
-        nuevoArticulo.comprado = false  // Por defecto, el artículo no está comprado
+        nuevoArticulo.comprado = false
         nuevoArticulo.categoria = categoria
-        nuevoArticulo.tienda = tienda
         
-        try context.save()  // Guardamos el contexto
+        nuevoArticulo.addToTiendas(NSSet(array: tiendas))
+        
+        try context.save()
     }
-    
-    // Función para cargar todos los artículos
+
+
     func cargarArticulos() -> [Articulo]? {
         let fetchRequest: NSFetchRequest<Articulo> = Articulo.fetchRequest()
         
         do {
-            return try context.fetch(fetchRequest)  // Recuperamos todos los artículos
+            return try context.fetch(fetchRequest)
         } catch {
             print("Error al cargar artículos: \(error)")
             return nil
         }
     }
     
-    // Función para eliminar un artículo
     func eliminarArticulo(articulo: Articulo) throws {
         context.delete(articulo)
-        try context.save()  // Guardamos el contexto después de la eliminación
+        try context.save()
     }
     
-    // Función para eliminar artículos seleccionados
     func eliminarArticulosSeleccionados(articulosSeleccionados: [Articulo]) throws {
         for articulo in articulosSeleccionados {
             context.delete(articulo)
         }
-        try context.save()  // Guardamos el contexto después de las eliminaciones
+        try context.save()
     }
     
-    // Función para marcar artículos seleccionados como comprados
     func marcarArticulosComprados(articulosSeleccionados: [Articulo]) throws {
         for articulo in articulosSeleccionados {
             articulo.comprado = true
         }
-        try context.save()  // Guardamos el contexto después de marcar como comprados
+        try context.save()
     }
     
-    // Función para filtrar artículos por categoría y tienda
-    func filtrarArticulos(categoria: String?, tienda: String?) -> [Articulo]? {
+    func filtrarArticulos(categoria: String?, tienda: Tienda?) -> [Articulo]? {
         let fetchRequest: NSFetchRequest<Articulo> = Articulo.fetchRequest()
         var predicados: [NSPredicate] = []
         
@@ -73,14 +66,27 @@ struct CoreDataManagerCompras {
         }
         
         if !predicados.isEmpty {
-            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicados)  // Combinamos los predicados con AND
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicados)
         }
         
         do {
-            return try context.fetch(fetchRequest)  // Recuperamos los artículos filtrados
+            return try context.fetch(fetchRequest)
         } catch {
             print("Error al filtrar artículos: \(error)")
             return nil
         }
     }
+    
+    func obtenerTiendaPorNombre(nombre: String) throws -> Tienda? {
+        let fetchRequest: NSFetchRequest<Tienda> = Tienda.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "nombre == %@", nombre)
+        
+        do {
+            let tiendas = try context.fetch(fetchRequest)
+            return tiendas.first 
+        } catch {
+            throw error
+        }
+    }
+
 }

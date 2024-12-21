@@ -7,20 +7,18 @@ struct ResumenComprasView: View {
         self._articulos = FetchRequest(
             entity: Articulo.entity(),
             sortDescriptors: [NSSortDescriptor(keyPath: \Articulo.nombre, ascending: true)],
-            predicate: nil // No necesitamos un filtro aquí
+            predicate: nil
         )
     }
 
     var body: some View {
         VStack(spacing: 20) {
-            // Título con tamaño de letra reducido y sin padding horizontal
             Text("Resumen de Compras")
-                .font(.title) // Tamaño más pequeño
+                .font(.title)
                 .fontWeight(.bold)
                 .foregroundColor(.primary)
-                .padding(.top) // Sólo se mantiene el padding superior
+                .padding(.top)
 
-            // Sección de Totales
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
                     Image(systemName: "cart.fill")
@@ -48,9 +46,8 @@ struct ResumenComprasView: View {
             }
             .padding()
             .background(RoundedRectangle(cornerRadius: 15).fill(Color.gray.opacity(0.1)))
-            .padding(.horizontal, 0) // Eliminamos el padding horizontal
+            .padding(.horizontal, 0)
 
-            // Desglose por categoría
             VStack(alignment: .leading, spacing: 12) {
                 Text("Desglose por categoría:")
                     .font(.title2)
@@ -74,7 +71,7 @@ struct ResumenComprasView: View {
                         .padding()
                         .background(RoundedRectangle(cornerRadius: 10).stroke(Color.blue))
                     }
-                    .padding(.horizontal, 0) // Eliminamos el padding horizontal
+                    .padding(.horizontal, 0)
                 }
             }
             .padding(.top)
@@ -85,7 +82,6 @@ struct ResumenComprasView: View {
         .background(Color(UIColor.systemBackground))
     }
 
-    // Obtener todas las categorías
     func getCategorias() -> [String] {
         let categorias = Set(articulos.compactMap { $0.categoria })
         return Array(categorias)

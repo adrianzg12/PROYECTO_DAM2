@@ -9,6 +9,12 @@
         <attribute name="notas" optional="YES" attributeType="String"/>
         <attribute name="prioridad" optional="YES" attributeType="String"/>
         <attribute name="tienda" optional="YES" attributeType="String"/>
+        <relationship name="tiendas" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tienda" inverseName="articulos" inverseEntity="Tienda"/>
+    </entity>
+    <entity name="Tienda" representedClassName="Tienda" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="nombre" optional="YES" attributeType="String"/>
+        <relationship name="articulos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Articulo" inverseName="tiendas" inverseEntity="Articulo"/>
     </entity>
     <entity name="Usuario" representedClassName="Usuario" syncable="YES" codeGenerationType="class">
         <attribute name="email" attributeType="String"/>

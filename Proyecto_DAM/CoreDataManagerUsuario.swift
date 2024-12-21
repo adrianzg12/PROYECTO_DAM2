@@ -1,7 +1,6 @@
 import CoreData
 import Foundation
 
-// Asegúrate de que este código esté dentro de Persistence.swift o en un archivo separado según tu estructura de proyecto.
 
 struct CoreDataManagerUsuario {
     
@@ -9,7 +8,6 @@ struct CoreDataManagerUsuario {
 
     private let context = PersistenceController.shared.viewContext
     
-    // Función para guardar un usuario
     func guardarUsuario(email: String, password: String, nombre: String) throws {
         let usuario = Usuario(context: context)
         usuario.id = UUID()
@@ -20,7 +18,6 @@ struct CoreDataManagerUsuario {
         try context.save()
     }
     
-    // Función para validar un usuario
     func validarUsuario(email: String, password: String) -> Usuario? {
         let request: NSFetchRequest<Usuario> = Usuario.fetchRequest()
         request.predicate = NSPredicate(format: "email == %@ AND password == %@", email, password)
@@ -28,5 +25,4 @@ struct CoreDataManagerUsuario {
         return (try? context.fetch(request))?.first
     }
     
-    // Otras funciones relacionadas con el manejo de usuarios pueden ser agregadas aquí.
 }

@@ -11,8 +11,9 @@ struct EditarArticuloView: View {
     @State private var categorias: [String] = []
     @State private var tiendas: [String] = []
     @State private var categoriaSeleccionada: String = ""
-    @State private var tiendaSeleccionada: String = ""
     
+    @State private var tiendasSeleccionadas: Set<String> = []
+
     @State private var showDeleteConfirmation = false
 
     init(articulo: Binding<Articulo>) {
@@ -22,7 +23,10 @@ struct EditarArticuloView: View {
         _prioridad = State(initialValue: articulo.wrappedValue.prioridad ?? "Baja")
         _notas = State(initialValue: articulo.wrappedValue.notas ?? "")
         _categoriaSeleccionada = State(initialValue: articulo.wrappedValue.categoria ?? "")
-        _tiendaSeleccionada = State(initialValue: articulo.wrappedValue.tienda ?? "")
+        
+        if let tiendas = articulo.wrappedValue.tienda {
+            self._tiendasSeleccionadas = State(initialValue: Set(tiendas.split(separator: ",").map { String($0) }))
+        }
     }
 
     var body: some View {
@@ -44,7 +48,6 @@ struct EditarArticuloView: View {
                         .font(.subheadline)
                         .foregroundColor(.gray)
                     
-                    // Categorías como botones
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(categorias, id: \.self) { categoria in
@@ -69,17 +72,20 @@ struct EditarArticuloView: View {
                         .font(.subheadline)
                         .foregroundColor(.gray)
                     
-                    // Tiendas como botones
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(tiendas, id: \.self) { tienda in
                                 Button(action: {
-                                    tiendaSeleccionada = tienda
+                                    if tiendasSeleccionadas.contains(tienda) {
+                                        tiendasSeleccionadas.remove(tienda)
+                                    } else {
+                                        tiendasSeleccionadas.insert(tienda)
+                                    }
                                 }) {
                                     Text(tienda)
                                         .padding()
-                                        .background(tiendaSeleccionada == tienda ? Color.blue : Color.gray.opacity(0.2))
-                                        .foregroundColor(tiendaSeleccionada == tienda ? .white : .blue)
+                                        .background(tiendasSeleccionadas.contains(tienda) ? Color.blue : Color.gray.opacity(0.2))
+                                        .foregroundColor(tiendasSeleccionadas.contains(tienda) ? .white : .blue)
                                         .cornerRadius(8)
                                 }
                                 .frame(height: 40)
@@ -90,7 +96,6 @@ struct EditarArticuloView: View {
                 }
             }
             
-            // Sección de acciones
             Section {
                 Button("Eliminar Artículo") {
                     showDeleteConfirmation = true
@@ -142,7 +147,9 @@ struct EditarArticuloView: View {
             articulo.prioridad = prioridad
             articulo.notas = notas.isEmpty ? nil : notas
             articulo.categoria = categoriaSeleccionada
-            articulo.tienda = tiendaSeleccionada
+            
+            articulo.tienda = tiendasSeleccionadas.joined(separator: ",")
+            
             try articulo.managedObjectContext?.save()
             presentationMode.wrappedValue.dismiss()
         } catch {
@@ -150,7 +157,6 @@ struct EditarArticuloView: View {
         }
     }
 
-    // Función para eliminar el artículo
     private func eliminarArticulo() {
         do {
             try CoreDataManagerCompras.shared.eliminarArticulo(articulo: articulo)

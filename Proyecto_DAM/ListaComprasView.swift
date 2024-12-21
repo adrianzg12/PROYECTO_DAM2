@@ -15,13 +15,12 @@ struct ListaComprasView: View {
         self._articulos = FetchRequest(
             entity: Articulo.entity(),
             sortDescriptors: [NSSortDescriptor(keyPath: \Articulo.nombre, ascending: true)],
-            predicate: nil // Inicialmente no hay filtro
+            predicate: nil
         )
     }
     
     var body: some View {
         VStack {
-            // Filtro
             HStack {
                 Picker("Categoría", selection: $categoriaSeleccionada) {
                     Text("Categoría").tag(String?.none)
@@ -47,21 +46,23 @@ struct ListaComprasView: View {
             }
             .padding()
 
-            // Lista de artículos
             List(articulos, id: \.self, selection: $articulosSeleccionados) { articulo in
                 NavigationLink(destination: EditarArticuloView(articulo: Binding(
                     get: { articulo },
                     set: { nuevoArticulo in
-                        // Extraer los valores del artículo para guardarlos
                         do {
-                            try CoreDataManagerCompras.shared.guardarArticulo(
-                                nombre: nuevoArticulo.nombre ?? "",
-                                cantidad: nuevoArticulo.cantidad,
-                                prioridad: nuevoArticulo.prioridad ?? "",
-                                notas: nuevoArticulo.notas,
-                                categoria: nuevoArticulo.categoria ?? "",
-                                tienda: nuevoArticulo.tienda ?? ""
-                            )
+                            if let tienda = try? CoreDataManagerCompras.shared.obtenerTiendaPorNombre(nombre: nuevoArticulo.tienda ?? "") {
+                                try CoreDataManagerCompras.shared.guardarArticulo(
+                                    nombre: nuevoArticulo.nombre ?? "",
+                                    cantidad: nuevoArticulo.cantidad,
+                                    prioridad: nuevoArticulo.prioridad ?? "",
+                                    notas: nuevoArticulo.notas,
+                                    categoria: nuevoArticulo.categoria ?? "",
+                                    tiendas: [tienda]
+                                )
+                            } else {
+                                print("No se encontró la tienda con el nombre \(nuevoArticulo.tienda ?? "")")
+                            }
                         } catch {
                             print("Error al guardar el artículo: \(error.localizedDescription)")
                         }
@@ -88,7 +89,6 @@ struct ListaComprasView: View {
                 }
             }
 
-            // Barra de botones para eliminar y marcar como comprados
             HStack {
                 Button("Marcar como Comprado") {
                     marcarArticulosComprados()
@@ -118,7 +118,6 @@ struct ListaComprasView: View {
                 .font(.title)
         })
         .onAppear {
-            // Fetch Categorías
             ApiManager.shared.fetchCategorias { categorias, error in
                 if let categorias = categorias {
                     self.categorias = categorias
@@ -127,7 +126,6 @@ struct ListaComprasView: View {
                 }
             }
 
-            // Fetch Tiendas
             ApiManager.shared.fetchTiendas { tiendas, error in
                 if let tiendas = tiendas {
                     self.tiendas = tiendas
@@ -142,7 +140,6 @@ struct ListaComprasView: View {
         .navigationTitle("Lista de Compras")
     }
     
-    // Actualizar predicado para filtrar artículos
     func actualizarFiltro() {
         var predicates: [NSPredicate] = []
         
@@ -154,7 +151,6 @@ struct ListaComprasView: View {
             predicates.append(NSPredicate(format: "tienda == %@", tienda))
         }
         
-        // Combinar predicados si hay más de uno
         let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         self.articulos.nsPredicate = predicates.isEmpty ? nil : compoundPredicate
     }
@@ -162,7 +158,6 @@ struct ListaComprasView: View {
     func eliminarArticulosSeleccionados() {
         do {
             try CoreDataManagerCompras.shared.eliminarArticulosSeleccionados(articulosSeleccionados: Array(articulosSeleccionados))
-            // Refrescar la lista después de eliminar
             actualizarFiltro()
         } catch {
             print("Error al eliminar artículos: \(error)")
@@ -172,7 +167,6 @@ struct ListaComprasView: View {
     func marcarArticulosComprados() {
         do {
             try CoreDataManagerCompras.shared.marcarArticulosComprados(articulosSeleccionados: Array(articulosSeleccionados))
-            // Refrescar la lista después de marcar como comprado
             actualizarFiltro()
         } catch {
             print("Error al marcar artículos como comprados: \(error)")

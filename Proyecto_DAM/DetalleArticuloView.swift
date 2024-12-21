@@ -2,13 +2,12 @@ import SwiftUI
 
 struct DetalleArticuloView: View {
     @Environment(\.presentationMode) var presentationMode
-    @State var articulo: Articulo  // Artículo que se pasa a la vista
+    @State var articulo: Articulo
     @State private var showEditView = false
     @State private var showDeleteConfirmation = false
 
     var body: some View {
         Form {
-            // Sección de detalles del artículo
             Section(header: Text("Detalles del Artículo")) {
                 Text("Nombre: \(articulo.nombre ?? "No disponible")")
                 Text("Cantidad: \(articulo.cantidad)")
@@ -16,13 +15,11 @@ struct DetalleArticuloView: View {
                 Text("Notas adicionales: \(articulo.notas ?? "No hay notas")")
             }
 
-            // Sección de categoría y tienda
             Section(header: Text("Categoría y Tienda")) {
                 Text("Categoría: \(articulo.categoria ?? "No especificada")")
                 Text("Tienda: \(articulo.tienda ?? "No especificada")")
             }
 
-            // Sección de acciones
             Section {
                 Button("Editar Artículo") {
                     showEditView = true
@@ -37,7 +34,6 @@ struct DetalleArticuloView: View {
         }
         .navigationTitle("Detalles del Artículo")
         .sheet(isPresented: $showEditView) {
-            // Vista de edición de artículo
             EditarArticuloView(articulo: $articulo)
         }
         .alert(isPresented: $showDeleteConfirmation) {
@@ -55,7 +51,6 @@ struct DetalleArticuloView: View {
         })
     }
 
-    // Función para eliminar el artículo
     private func eliminarArticulo() {
         do {
             try CoreDataManagerCompras.shared.eliminarArticulo(articulo: articulo)

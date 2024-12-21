@@ -16,7 +16,6 @@
 		B780946A2D0DBF71003EB029 /* CoreDataManagerUsuario.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78094692D0DBF71003EB029 /* CoreDataManagerUsuario.swift */; };
 		B780946C2D0DC6B0003EB029 /* RegistroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B780946B2D0DC6B0003EB029 /* RegistroView.swift */; };
 		B780946E2D0DC9B1003EB029 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B780946D2D0DC9B1003EB029 /* LoginView.swift */; };
-		B78094722D0DDD7D003EB029 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B78094712D0DDD7D003EB029 /* Alamofire */; };
 		B78094742D0DE2A7003EB029 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78094732D0DE2A7003EB029 /* ApiManager.swift */; };
 		B78094762D0DE4B2003EB029 /* CoreDataManagerCompras.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78094752D0DE4B2003EB029 /* CoreDataManagerCompras.swift */; };
 		B78094782D0DE6B4003EB029 /* ListaComprasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78094772D0DE6B4003EB029 /* ListaComprasView.swift */; };
@@ -24,6 +23,7 @@
 		B780947C2D0DF756003EB029 /* DetalleArticuloView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B780947B2D0DF756003EB029 /* DetalleArticuloView.swift */; };
 		B79CF4E72D16FFD5002D8F7F /* EditarArticuloView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79CF4E62D16FFD5002D8F7F /* EditarArticuloView.swift */; };
 		B79CF4E92D1708A2002D8F7F /* ResumenComprasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79CF4E82D1708A2002D8F7F /* ResumenComprasView.swift */; };
+		B79CF4EF2D171E2B002D8F7F /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B79CF4EE2D171E2B002D8F7F /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B78094722D0DDD7D003EB029 /* Alamofire in Frameworks */,
+				B79CF4EF2D171E2B002D8F7F /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +63,7 @@
 			children = (
 				B78094552D0DB8D8003EB029 /* Proyecto_DAM */,
 				B78094542D0DB8D8003EB029 /* Products */,
+				B79CF4ED2D171E2B002D8F7F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -105,6 +106,13 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		B79CF4ED2D171E2B002D8F7F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -122,7 +130,7 @@
 			);
 			name = Proyecto_DAM;
 			packageProductDependencies = (
-				B78094712D0DDD7D003EB029 /* Alamofire */,
+				B79CF4EE2D171E2B002D8F7F /* Alamofire */,
 			);
 			productName = Proyecto_DAM;
 			productReference = B78094532D0DB8D8003EB029 /* Proyecto_DAM.app */;
@@ -406,7 +414,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B78094712D0DDD7D003EB029 /* Alamofire */ = {
+		B79CF4EE2D171E2B002D8F7F /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B78094702D0DDD7D003EB029 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
