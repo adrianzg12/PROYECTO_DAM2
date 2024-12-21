@@ -14,7 +14,6 @@ struct LoginView: View {
                 VStack {
                     Spacer()
                     
-                    // Encabezado
                     VStack(spacing: 10) {
                         Image(systemName: "cart")
                             .resizable()
@@ -29,9 +28,7 @@ struct LoginView: View {
                     
                     Spacer().frame(height: 40)
                     
-                    // Formulario
                     VStack(spacing: 20) {
-                        // Campo de Email
                         HStack {
                             Image(systemName: "envelope")
                                 .foregroundColor(.gray)
@@ -42,7 +39,6 @@ struct LoginView: View {
                         .padding()
                         .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.gray, lineWidth: 1))
                         
-                        // Campo de Contraseña
                         HStack {
                             Image(systemName: "lock")
                                 .foregroundColor(.gray)
@@ -51,7 +47,6 @@ struct LoginView: View {
                         .padding()
                         .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.gray, lineWidth: 1))
                         
-                        // Botón de Inicio de Sesión
                         Button(action: iniciarSesion) {
                             Text("Iniciar Sesión")
                                 .frame(maxWidth: .infinity)
@@ -62,7 +57,6 @@ struct LoginView: View {
                         }
                         .padding(.top, 10)
                         
-                        // Mensaje de Error
                         if !mensajeError.isEmpty {
                             Text(mensajeError)
                                 .foregroundColor(.red)
@@ -74,7 +68,6 @@ struct LoginView: View {
                     
                     Spacer()
                     
-                    // Enlace para Registro
                     NavigationLink(destination: RegistroView()) {
                         Text("¿No tienes cuenta? Regístrate")
                             .foregroundColor(.blue)

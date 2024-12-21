@@ -12,7 +12,6 @@ struct RegistroView: View {
         VStack {
             Spacer()
             
-            // Encabezado
             VStack(spacing: 10) {
                 Image(systemName: "person.crop.circle.badge.plus")
                     .resizable()
@@ -27,9 +26,7 @@ struct RegistroView: View {
             
             Spacer().frame(height: 40)
             
-            // Formulario
             VStack(spacing: 20) {
-                // Campo de Nombre
                 HStack {
                     Image(systemName: "person")
                         .foregroundColor(.gray)
@@ -39,7 +36,6 @@ struct RegistroView: View {
                 .padding()
                 .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.gray, lineWidth: 1))
                 
-                // Campo de Email
                 HStack {
                     Image(systemName: "envelope")
                         .foregroundColor(.gray)
@@ -50,7 +46,6 @@ struct RegistroView: View {
                 .padding()
                 .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.gray, lineWidth: 1))
                 
-                // Campo de Contraseña
                 HStack {
                     Image(systemName: "lock")
                         .foregroundColor(.gray)
@@ -59,7 +54,6 @@ struct RegistroView: View {
                 .padding()
                 .background(RoundedRectangle(cornerRadius: 10).strokeBorder(Color.gray, lineWidth: 1))
                 
-                // Botón de Registro
                 Button(action: registrarUsuario) {
                     Text("Registrar")
                         .frame(maxWidth: .infinity)
@@ -70,7 +64,6 @@ struct RegistroView: View {
                 }
                 .padding(.top, 10)
                 
-                // Mensaje de Error
                 if !mensajeError.isEmpty {
                     Text(mensajeError)
                         .foregroundColor(.red)
@@ -82,7 +75,6 @@ struct RegistroView: View {
             
             Spacer()
             
-            // Botón para Volver
             Button(action: {
                 presentationMode.wrappedValue.dismiss()
             }) {
